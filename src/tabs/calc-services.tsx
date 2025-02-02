@@ -6,11 +6,12 @@ interface Props {
   setPriceServicesCargo: Dispatch<SetStateAction<number>>
   setPriceServicesKey: Dispatch<SetStateAction<number>>
   setPriceServicesInt: Dispatch<SetStateAction<number>>
+  activeKey: string
 }
 
-export const CalcServices = ({ setPriceServicesCargo, setPriceServicesKey, setPriceServicesInt }: Props) => {
+export const CalcServices = ({ setPriceServicesCargo, setPriceServicesKey, setPriceServicesInt, activeKey }: Props) => {
   
-  const { services, loadingServices } = useGetServices()
+  const { services, loadingServices } = useGetServices(activeKey)
   
   const onChangeCargo: GetProp<typeof Checkbox.Group<number>, 'onChange'> = (checkedValues: number[]) => {
     setPriceServicesCargo(checkedValues.reduce((prev, next) => prev + next, 0))

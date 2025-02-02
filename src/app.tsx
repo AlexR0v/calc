@@ -1,41 +1,29 @@
 import { useSession }           from '@supabase/auth-helpers-react'
 import { ConfigProvider, Tabs } from 'antd'
 import ruRu                     from 'antd/locale/ru_RU'
-import { useEffect, useState }  from 'react'
+import { useState }             from 'react'
 import { AdminButton }          from './admin/admin-button.tsx'
 import { Calculator }           from './tabs/calculator.tsx'
 import { Settings }             from './tabs/settings/settings.tsx'
 
 export const App = () => {
   
+  const [activeKey, setActiveKey] = useState('1')
+  
   const session = useSession()
   
-  const [items, setItems] = useState([
+  const items = [
     {
       key: '1',
       label: 'Калькулятор',
-      children: <Calculator />,
+      children: <Calculator activeKey={activeKey} />,
     },
-  ])
-  
-  useEffect(() => {
-    if(session?.user?.id === import.meta.env.VITE_ADMIN_ID) {
-      setItems((prev) => {
-        if(prev.length === 1) {
-          return [
-            ...prev,
-            {
-              key: '2',
-              label: 'Настройки',
-              children: <Settings />,
-            },
-          ]
-        }
-        return prev
-      })
-    }
-    
-  }, [session])
+    {
+      key: '2',
+      label: 'Настройки',
+      children: <Settings activeKey={activeKey} />,
+    },
+  ]
   
   return (
     <ConfigProvider
@@ -49,8 +37,10 @@ export const App = () => {
       <div className='container mx-auto pt-3 h-full'>
         <Tabs
           centered
-          defaultActiveKey='1'
-          items={items}
+          activeKey={activeKey}
+          defaultActiveKey={activeKey}
+          items={session?.user?.id === import.meta.env.VITE_ADMIN_ID ? items : items.slice(0, 1)}
+          onChange={(key) => setActiveKey(() => key)}
         />
       </div>
       <AdminButton />

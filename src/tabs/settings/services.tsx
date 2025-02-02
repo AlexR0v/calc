@@ -13,11 +13,15 @@ type TForm = {
   services: ServicesType[]
 }
 
-export const Services = () => {
+interface Props {
+  activeKey: string
+}
+
+export const Services = ({ activeKey }: Props) => {
   
   const [loading, setLoading] = useState(false)
   
-  const { services, setServices, loadingServices } = useGetServices()
+  const { services, setServices, loadingServices } = useGetServices(activeKey)
   
   const supabase = useSupabaseClient<Database>()
   

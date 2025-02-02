@@ -11,11 +11,15 @@ type TForm = {
   directions: DirectionsType[]
 }
 
-export const Directions = () => {
+interface Props {
+  activeKey: string
+}
+
+export const Directions = ({ activeKey }: Props) => {
   
   const [loading, setLoading] = useState(false)
   
-  const { directions, setDirections, loadingDirections } = useGetDirections()
+  const { directions, setDirections, loadingDirections } = useGetDirections(activeKey)
   
   const supabase = useSupabaseClient<Database>()
   

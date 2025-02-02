@@ -10,11 +10,15 @@ type TForm = {
   general: GeneralSettings
 }
 
-export const General = () => {
+interface Props {
+  activeKey: string
+}
+
+export const General = ({ activeKey }: Props) => {
   
   const [loading, setLoading] = useState(false)
   
-  const { generalSettings, setGeneralSettings, loadingGeneralSettings } = useGetGeneralSettings()
+  const { generalSettings, setGeneralSettings, loadingGeneralSettings } = useGetGeneralSettings(activeKey)
   
   const supabase = useSupabaseClient<Database>()
   

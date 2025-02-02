@@ -4,9 +4,6 @@ import { useGetDirections }              from '../hooks/useGetDirections.tsx'
 import { useGetGeneralSettings }         from '../hooks/useGetGeneralSettings.tsx'
 import { CalcServices }                  from './calc-services.tsx'
 
-const CONVERSION_FACTOR = 150
-
-
 type SummProps = {
   priceDirection: number
   priceServices: number
@@ -22,10 +19,17 @@ const summ = ({ priceDirection, priceServices, volume, weight, conversion }: Sum
     weightVolume = volume * conversion > weightVolume ? volume * conversion : weightVolume
   }
   
-  return priceDirection * weightVolume + priceServices
+  return (priceDirection * weightVolume + priceServices).toLocaleString('en-US', {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  }).replace(/,/g, ' ')
 }
 
-export const Calculator = () => {
+interface Props {
+  activeKey: string
+}
+
+export const Calculator = ({ activeKey }: Props) => {
   
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
@@ -40,8 +44,8 @@ export const Calculator = () => {
   const [error, setError] = useState('')
   const [errorWeight, setErrorWeight] = useState('')
   
-  const { directions, uniqueDirections, loadingDirections } = useGetDirections()
-  const { generalSettings, loadingGeneralSettings } = useGetGeneralSettings()
+  const { directions, uniqueDirections, loadingDirections } = useGetDirections(activeKey)
+  const { generalSettings, loadingGeneralSettings } = useGetGeneralSettings(activeKey)
   
   useEffect(() => {
     
@@ -61,7 +65,7 @@ export const Calculator = () => {
   }, [from, to])
   
   useEffect(() => {
-    if(volume && weight && volume * CONVERSION_FACTOR < weight) {
+    if(volume && weight && volume * +generalSettings.conversion < weight) {
       setErrorWeight('Тяжелый груз')
     } else {
       setErrorWeight('')
@@ -122,6 +126,7 @@ export const Calculator = () => {
           setPriceServicesCargo={setPriceServicesCargo}
           setPriceServicesInt={setPriceServicesInt}
           setPriceServicesKey={setPriceServicesKey}
+          activeKey={activeKey}
         />
         <div className='pt-5'>
           <span className='font-bold mr-2'>Итоговая цена:</span>

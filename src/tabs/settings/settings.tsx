@@ -3,25 +3,29 @@ import { Directions }              from './directions.tsx'
 import { General }                 from './general.tsx'
 import { Services }                from './services.tsx'
 
-const items: CollapseProps['items'] = [
-  {
-    key: '0',
-    label: 'Общие настройки',
-    children: <General />,
-  },
-  {
-    key: '1',
-    label: 'Направления',
-    children: <Directions />,
-  },
-  {
-    key: '2',
-    label: 'Дополнительные услуги',
-    children: <Services />,
-  },
-]
+interface Props {
+  activeKey: string
+}
 
-export const Settings = () => {
+export const Settings = ({ activeKey }: Props) => {
+  
+  const items: CollapseProps['items'] = [
+    {
+      key: '0',
+      label: 'Общие настройки',
+      children: <General activeKey={activeKey} />,
+    },
+    {
+      key: '1',
+      label: 'Направления',
+      children: <Directions activeKey={activeKey} />,
+    },
+    {
+      key: '2',
+      label: 'Дополнительные услуги',
+      children: <Services activeKey={activeKey} />,
+    },
+  ]
   
   return (
     <div className='flex flex-col gap-10 pt-10'>
