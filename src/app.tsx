@@ -46,7 +46,7 @@ export const App = () => {
         },
       }}
     >
-      <div className='container mx-auto pt-3'>
+      <div className='container mx-auto pt-3 h-full'>
         <Tabs
           centered
           defaultActiveKey='1'

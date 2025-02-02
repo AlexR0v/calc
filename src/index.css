@@ -15,3 +15,10 @@ body{
     flex-direction: column;
     gap: 4px;
 }
+
+.container {
+    background-image: url("./assets/shar.svg");
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: 140% 30%;
+}
